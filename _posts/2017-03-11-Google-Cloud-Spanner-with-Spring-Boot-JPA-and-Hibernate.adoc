@@ -38,6 +38,7 @@ I have created a sample project that will be used for this tutorial. Clone the p
 . Run the Java application (the main class is Application.class). The application is configured to automatically create the tables needed for the entities that are defined in the source code. This example project contains two entities (Customer and Invoice), and these tables will be created. Note that this process can take some time as Cloud Spanner is not very quick when it comes to DDL.
 . The application will then try to insert and then select some records into Cloud Spanner
 
+You can try to experiment with additional entities and also try to update some of them by changing the code. Please note that the DDL statement support of Google Cloud Spanner is somewhat limited. Adding nullable columns to existing tables and adding new tables should work without any hassle. More complex changes, such as changing an existing column, might produce errors and need to be changed manually through the web interface of Google Cloud Spanner.
 
 
 
