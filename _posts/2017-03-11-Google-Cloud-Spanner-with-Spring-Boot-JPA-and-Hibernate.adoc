@@ -27,7 +27,7 @@ Google kindly offers a $300 in free credit for trying out Cloud Spanner. Go to h
 
 That's it! You have now created the Google Cloud Spanner database needed for this tutorial.
 
-== Step 2: Get the Example Project
+== Step 2: Get and Run the Example Project
 I have created a sample project that will be used for this tutorial. Clone the project from https://github.com/olavloite/spanner-jpa-example . It is a Maven project with a dependency on a JDBC Driver for Google Cloud Spanner and on a Hibernate Dialect library. Make sure to get these dependencies. They are available on Maven Central. Then follow these steps:
 
 . Find the file `application.properties.example` in the root of the project and make a copy of this and name the copy `application.properties`.
@@ -36,10 +36,7 @@ I have created a sample project that will be used for this tutorial. Clone the p
 	`jdbc:cloudspanner://localhost;Project=[project-id];Instance=test-instance;Database=test-database;PvtKeyPath=[path-to-keyfile]`
 
 . Run the Java application (the main class is Application.class). The application is configured to automatically create the tables needed for the entities that are defined in the source code. This example project contains two entities (Customer and Invoice), and these tables will be created. Note that this process can take some time as Cloud Spanner is not very quick when it comes to DDL.
-. 
-
-
-
+. The application will then try to insert and then select some records into Cloud Spanner
 
 
 
