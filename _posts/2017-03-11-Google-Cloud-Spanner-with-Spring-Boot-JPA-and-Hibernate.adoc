@@ -10,4 +10,3 @@ Google Cloud Spanner is Google's horizontally scalable, globally consistent, rel
 == Step 1: Create a Cloud Spanner test database
 Google kindly offers a $300 in free credit for trying out Cloud Spanner. Go to https://cloud.google.com/spanner/ and click on Try It Free to create a test instance. Go through the registration process and then follow these steps to create a Cloud Spanner instance and database:
 .If you register for the first time with Google Cloud, Google automatically creates a project for you with the title 'My first project' and project id (or equivalent in your local language). Rename this project to something like `cloudspanner-test`.
-.
