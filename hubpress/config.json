@@ -2,9 +2,38 @@
   "meta": {
     "username": "olavloite",
     "repositoryName": "olavloite.hubpress.io",
-    "branch": "master"
+    "branch": "master",
+    "cname": ""
   },
   "theme": {
-    "name": "Casper"
+    "name": "casper"
+  },
+  "urls": {
+    "site": "https://olavloite.github.io",
+    "hubpress": "https://olavloite.github.io",
+    "theme": "//olavloite.github.io/themes/casper",
+    "images": "https://olavloite.github.io/images"
+  },
+  "site": {
+    "title": "",
+    "description": "",
+    "logo": "",
+    "cover": "",
+    "delay": "",
+    "postsPerPage": "",
+    "googleAnalytics": "",
+    "disqus": ""
+  },
+  "socialnetwork": {
+    "email": "koloite@gmail.com",
+    "github": "",
+    "twitter": "",
+    "facebook": "",
+    "googleplus": "",
+    "instagram": "",
+    "pinterest": "",
+    "flickr": "",
+    "linkedin": "",
+    "stackoverflow": ""
   }
 }
