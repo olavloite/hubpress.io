@@ -35,5 +35,15 @@
     "flickr": "",
     "linkedin": "",
     "stackoverflow": ""
+  },
+  "initialisationConfigComponent": {
+    "name": "initialise-configuration",
+    "computed": {},
+    "methods": {},
+    "staticRenderFns": [
+      null,
+      null,
+      null
+    ]
   }
 }
