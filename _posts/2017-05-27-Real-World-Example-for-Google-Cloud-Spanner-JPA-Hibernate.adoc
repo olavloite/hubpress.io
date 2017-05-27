@@ -4,6 +4,7 @@
 :hp-tags: Google_Cloud_Spanner, JPA, Hibernate, Java
 
 https://github.com/olavloite/github-monitor
+
 https://github.com/olavloite/gaf
 
 The combination of the two above projects show a real world example of how an application can be developed using JPA/Hibernate in combination with Google Cloud Spanner.
