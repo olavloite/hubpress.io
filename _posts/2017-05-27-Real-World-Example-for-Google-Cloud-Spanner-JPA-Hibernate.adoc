@@ -5,8 +5,8 @@
 :source-highlighter: pygments
 :source-language: java
 
-https://github.com/olavloite/github-monitor \
-https://github.com/olavloite/gaf \
+https://github.com/olavloite/github-monitor 
+https://github.com/olavloite/gaf 
 
 The combination of the two above projects show a real world example of how an application can be developed using JPA/Hibernate in combination with Google Cloud Spanner.
 
@@ -212,8 +212,8 @@ Google Cloud Spanner does support Interleaved Tables (https://cloud.google.com/s
 ## Getting the Project
 The example project is a multi-module Maven project. It also depends on another multi-module Maven project (General Application Framework, gaf, https://github.com/olavloite/gaf). You should get both from GitHub and import them into your IDE.
 
-https://github.com/olavloite/github-monitor \
-https://github.com/olavloite/gaf \
+https://github.com/olavloite/github-monitor 
+https://github.com/olavloite/gaf 
 
 
 
