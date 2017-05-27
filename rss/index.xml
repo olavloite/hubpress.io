@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Untitled RSS Feed]]></title><description><![CDATA[Untitled RSS Feed]]></description><link>https://olavloite.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sat, 27 May 2017 10:31:14 GMT</lastBuildDate><atom:link href="https://olavloite.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Real World Example for Google Cloud Spanner - JPA - Hibernate]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Untitled RSS Feed]]></title><description><![CDATA[Untitled RSS Feed]]></description><link>https://olavloite.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sat, 27 May 2017 10:33:54 GMT</lastBuildDate><atom:link href="https://olavloite.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Real World Example for Google Cloud Spanner - JPA - Hibernate]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p><a href="https://github.com/olavloite/github-monitor" class="bare">https://github.com/olavloite/github-monitor</a>
@@ -268,7 +268,167 @@ https://github.com/olavloite/gaf</code></pre>
 </div>
 </div>
 </div>
-</div>]]></description><link>https://olavloite.github.io/2017/05/27/Real-World-Example-for-Google-Cloud-Spanner-JPA-Hibernate.html</link><guid isPermaLink="true">https://olavloite.github.io/2017/05/27/Real-World-Example-for-Google-Cloud-Spanner-JPA-Hibernate.html</guid><category><![CDATA[Google_Cloud_Spanner]]></category><category><![CDATA[JPA]]></category><category><![CDATA[Hibernate]]></category><category><![CDATA[Java]]></category><dc:creator><![CDATA[Knut Olav Løite]]></dc:creator><pubDate>Sat, 27 May 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[Tutorial: Use Google Cloud Spanner with Spring Boot, JPA and Hibernate]]></title><description><![CDATA[<div id="preamble">
+</div>]]></description><link>https://olavloite.github.io/2017/05/27/Real-World-Example-for-Google-Cloud-Spanner-JPA-Hibernate.html</link><guid isPermaLink="true">https://olavloite.github.io/2017/05/27/Real-World-Example-for-Google-Cloud-Spanner-JPA-Hibernate.html</guid><category><![CDATA[Google_Cloud_Spanner]]></category><category><![CDATA[JPA]]></category><category><![CDATA[Hibernate]]></category><category><![CDATA[Java]]></category><dc:creator><![CDATA[Knut Olav Løite]]></dc:creator><pubDate>Sat, 27 May 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[Bulk Upload in Google Cloudspanner]]></title><description><![CDATA[<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Google Cloud Spanner is Google&#8217;s horizontally scalable, globally consistent, relational database service. Cloud Spanner claims to be <a href="https://cloud.google.com/spanner/">the first and only relational database service that is both strongly consistent and horizontally scalable</a>. Cloud Spanner supports transactions and SQL queries and could in theory be used with any application currently running on other relational databases. This tutorial shows how you could convert an existing relational database and bulk upload all data to a new Google Cloud Spanner database using <a href="https://github.com/olavloite/spanner-jdbc">this open source JDBC driver</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_topics">Topics</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This tutorial contains the following topics:
+. Convert an existing relational database to Cloud Spanner
+. Bulk upload data to Cloud Spanner using multiple parallel workers
+. Connect to a Cloud Spanner database with JDBC and use the following features (not supported by the JDBC driver supplied by Google):
+.. Transactions
+.. DDL statements (CREATE TABLE)
+.. DML statements (INSERT INTO, DELETE FROM)</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_it_works">How it Works</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This bulk upload example uses JDBC to connect to both the source (in this example: PostgreSQL) and destination Google Cloud Spanner database. The JDBC driver supplied by Google does not support DDL and DML statements, so we use this JDBC driver instead: <a href="https://github.com/olavloite/spanner-jdbc" class="bare">https://github.com/olavloite/spanner-jdbc</a></p>
+</div>
+<div class="sect2">
+<h3 id="_table_conversion">Table conversion</h3>
+<div class="paragraph">
+<p>The converter reads all tables in the source database and generates Google Cloud Spanner compliant DDL statements (CREATE TABLE&#8230;&#8203;) for the creation of the tables. The converter can be run in both SkipExisting and DropAndRecreate mode. It defaults to SkipExisting. The table creation process runs as a single thread process in autocommit mode. The main code can be found in <a href="https://github.com/olavloite/spanner-jdbc-converter/blob/master/src/main/java/nl/topicus/spanner/converter/ddl/TableConverter.java">TableConverter</a> .</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_data_conversion">Data conversion</h3>
+<div class="paragraph">
+<p>The converter then iterates over all the tables in the source database and copies the data from the source to the destination. This is done by generating DML-statements (INSERT INTO&#8230;&#8203;) for each row. Whether this process is executed single-threaded or multi-threaded using multiple workers, depends on the size of the table. It defaults to a threshold of 1,000 records. If the source table contains more records, the upload will be handled by multiple workers. This example project defaults to 10 upload workers running in parallel. Each worker opens a new connection to Cloud Spanner and runs its own transactions. Transactions are not supported by the JDBC driver supplied by Google, but the <a href="https://github.com/olavloite/spanner-jdbc">JDBC driver</a> used by this example does.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_step_1_create_a_cloud_spanner_test_database">Step 1: Create a Cloud Spanner test database</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This tutorial assumes that you already have a Google Cloud Spanner account and an empty test database. If you do not, and you want to know how to get it, follow the steps in one of my other tutorials: <a href="https://olavloite.github.io/2017/03/11/Google-Cloud-Spanner-with-Spring-Boot-JPA-and-Hibernate.html" class="bare">https://olavloite.github.io/2017/03/11/Google-Cloud-Spanner-with-Spring-Boot-JPA-and-Hibernate.html</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_step_2_get_and_run_the_example_project">Step 2: Get and Run the Example Project</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I have created a sample project that will be used for this tutorial. Clone the project from <a href="https://github.com/olavloite/spanner-jdbc-converter" class="bare">https://github.com/olavloite/spanner-jdbc-converter</a> . It is a Maven project with a dependency on a JDBC Driver for Google Cloud Spanner. Then follow these steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Find the file <code>converter.properties.example</code> in the root of the project and make a copy of this and name the copy <code>converter.properties</code>.</p>
+</li>
+<li>
+<p>Have a look at <code>converter.properties</code>. It contains three entries:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>TableConverter.convertMode=SkipExisting: This indicates that existing tables in the Cloud Spanner database should not be dropped and recreated, but skipped during conversion. If you want to drop and recreate tables, change the value to DropAndRecreate</p>
+</li>
+<li>
+<p>DataConverter.convertMode=SkipExisting: Same as TableConverter.convertMode, but now for the data in the table. If SkipExisting is set, no data will be converted if the destination table contains 1 or more records (no data comparison will be done). If set to DropAndRecreate, all data in the destination table will always be deleted and recreated from the source database.</p>
+</li>
+<li>
+<p>TableConverter.specificColumnMapping.uuid=BYTES(16): Using this configuration you can specify a specific data type mapping for specific columns. The converter contains a default list of data type conversion which can be overridden with this property. This mapping specifies that all columns with the NAME (not data type) uuid should be converted to BYTES(16). If you want a specific mapping for one column of one table, you should specify it as TableConverter.specificColumnMapping.tableName.columnName</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Run the Java application (the main class is Converter.class). It takes the following three arguments:</p>
+</li>
+<li>
+<p>The JDBC connection string of the source database. In my case this is "jdbc:postgresql://localhost:5432/databaseName?user=username&amp;password=secret"</p>
+</li>
+<li>
+<p>The JDBC connection string of the destination (Cloud Spanner) database. In my case this is "jdbc:cloudspanner://localhost;Project=test-jdbc-161317;Instance=converted;Database=databaseName;PvtKeyPath=pathToKeyFile.json"</p>
+</li>
+<li>
+<p>The path to the converter.properties file. If you run the test application in Eclipse and keep the converter.properties file in the root of the project, the value of this argument is simply "converter.properties"</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The application will scan your source database for all tables and then try to create these in your Cloud Spanner database. After creating all tables, the application will convert the data of the converted tables. Data conversion is done using two strategies, depending on the size of the table:
+. Tables with 1,000 or less records will be converted using a simple single threaded conversion process. All records will be converted in one transaction.
+. Tables with more than 1,000 records are converted by 10 parallel workers. Each worker is assigned a proportionate number of the records in the table to convert. The workers then convert the data in batches of 1,000 records, each batch being a single transaction.</p>
+</div>
+<div class="paragraph">
+<p>The code snippet below shows the main part of the worker. Note how the worker uses standard JDBC functionality to access Cloud Spanner. Both transactions and statements are standard JDBC calls.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>try (Connection source = DriverManager.getConnection(urlSource);
+		Connection destination = DriverManager.getConnection(urlDestination))
+{
+	log.info(name + ": " + sourceTable + ": Starting copying " + numberOfRecordsToCopy + " records");
+	destination.setAutoCommit(false);
+	String sql = "INSERT INTO " + destinationTable + " (" + cols.getColumnNames() + ") VALUES \n";
+	sql = sql + "(" + cols.getColumnParameters() + ")";
+	PreparedStatement statement = destination.prepareStatement(sql);
+	int lastRecord = beginOffset + numberOfRecordsToCopy;
+	int recordCount = 0;
+	int currentOffset = beginOffset;
+	while (true)
+	{
+		int limit = Math.min(batchSize, lastRecord - currentOffset);
+		String select = selectFormat.replace("$COLUMNS", cols.getColumnNames());
+		select = select.replace("$TABLE", sourceTable);
+		select = select.replace("$PRIMARY_KEY", cols.getPrimaryKeyColumns());
+		select = select.replace("$BATCH_SIZE", String.valueOf(limit));
+		select = select.replace("$OFFSET", String.valueOf(currentOffset));
+		try (ResultSet rs = source.createStatement().executeQuery(select))
+		{
+			while (rs.next())
+			{
+				int index = 1;
+				for (Integer type : cols.columnTypes)
+				{
+					Object object = rs.getObject(index);
+					statement.setObject(index, object, type);
+					index++;
+				}
+				statement.executeUpdate();
+				recordCount++;
+			}
+		}
+		destination.commit();
+		log.info(name + ": " + sourceTable + ": Records copied so far: " + recordCount + " of "
+				+ numberOfRecordsToCopy);
+		currentOffset = currentOffset + batchSize;
+		if (recordCount &gt;= numberOfRecordsToCopy)
+			break;
+	}
+}
+catch (SQLException e)
+{
+	log.severe("Error during data copy: " + e.getMessage());
+	throw new RuntimeException(e);
+}
+log.info(name + ": Finished copying");</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary">Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Google Cloud Spanner JDBC driver allows you to work with Cloud Spanner as it was (almost) any other JDBC compliant relational database, including DDL- and DML-statements, (prepared) JDBC statements and transactions. Cloud Spanner itself has some limitations when it comes to bulk update statements. Insert and update statements can only operate on one row at a time.
+The JDBC driver can also be used to develop applications using JPA / Hibernate in combination with Google Cloud Spanner. An example can be found here: <a href="https://olavloite.github.io/2017/03/11/Google-Cloud-Spanner-with-Spring-Boot-JPA-and-Hibernate.html" class="bare">https://olavloite.github.io/2017/03/11/Google-Cloud-Spanner-with-Spring-Boot-JPA-and-Hibernate.html</a></p>
+</div>
+</div>
+</div>]]></description><link>https://olavloite.github.io/2017/05/06/Bulk-Upload-in-Google-Cloudspanner.html</link><guid isPermaLink="true">https://olavloite.github.io/2017/05/06/Bulk-Upload-in-Google-Cloudspanner.html</guid><category><![CDATA[Google_Cloud_Spanner]]></category><category><![CDATA[ Google_Cloud]]></category><category><![CDATA[ Cloud_Spanner]]></category><category><![CDATA[ JDBC]]></category><category><![CDATA[ Java]]></category><category><![CDATA[ Open_Source]]></category><category><![CDATA[ Transactions]]></category><category><![CDATA[ Bulk_Upload]]></category><category><![CDATA[ DML]]></category><category><![CDATA[ DDL]]></category><dc:creator><![CDATA[Knut Olav Løite]]></dc:creator><pubDate>Sat, 06 May 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[Tutorial: Use Google Cloud Spanner with Spring Boot, JPA and Hibernate]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>Google Cloud Spanner is Google&#8217;s horizontally scalable, globally consistent, relational database service. Cloud Spanner claims to be <a href="https://cloud.google.com/spanner/">the first and only relational database service that is both strongly consistent and horizontally scalable</a>. Cloud Spanner supports transactions and SQL queries and could in theory be used with any application currently running on other relational databases. This tutorial will guide you through the steps needed to set up a test environment for developing a Spring Boot application with Cloud Spanner as its data source using JPA/Hibernate.</p>
