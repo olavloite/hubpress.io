@@ -171,6 +171,7 @@ The Account entity extends the base entity and adds additional columns. The enti
 ```RoleAccount``` stores relations between accounts and roles. I consider it good practice to explicitly define these many-to-many relations as a stand alone entity, and not using a many-to-many annotation with an automatically generated relations table. You gain more control over the relation by defining it as an entity.
 
 ```
+
 @Entity
 @Table(indexes = { @Index(name = "IDX_ROLEACCOUNT_ACCOUNT", columnList = "account"),
 		@Index(name = "IDX_ROLEACCOUNT_ROLE", columnList = "role") })
