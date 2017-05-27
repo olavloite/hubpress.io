@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Untitled RSS Feed]]></title><description><![CDATA[Untitled RSS Feed]]></description><link>https://olavloite.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sat, 27 May 2017 11:08:56 GMT</lastBuildDate><atom:link href="https://olavloite.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Real World Example for Google Cloud Spanner - JPA - Hibernate]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Untitled RSS Feed]]></title><description><![CDATA[Untitled RSS Feed]]></description><link>https://olavloite.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sat, 27 May 2017 11:09:57 GMT</lastBuildDate><atom:link href="https://olavloite.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Real World Example for Google Cloud Spanner - JPA - Hibernate]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://github.com/olavloite/github-monitor" class="bare">https://github.com/olavloite/github-monitor</a> \
-<a href="https://github.com/olavloite/gaf" class="bare">https://github.com/olavloite/gaf</a> \</p>
+<p><a href="https://github.com/olavloite/github-monitor" class="bare">https://github.com/olavloite/github-monitor</a>
+<a href="https://github.com/olavloite/gaf" class="bare">https://github.com/olavloite/gaf</a></p>
 </div>
 <div class="paragraph">
 <p>The combination of the two above projects show a real world example of how an application can be developed using JPA/Hibernate in combination with Google Cloud Spanner.</p>
@@ -269,8 +269,8 @@ public class RoleAccount extends FriggEntity
 <p>The example project is a multi-module Maven project. It also depends on another multi-module Maven project (General Application Framework, gaf, <a href="https://github.com/olavloite/gaf" class="bare">https://github.com/olavloite/gaf</a>). You should get both from GitHub and import them into your IDE.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/olavloite/github-monitor" class="bare">https://github.com/olavloite/github-monitor</a> \
-<a href="https://github.com/olavloite/gaf" class="bare">https://github.com/olavloite/gaf</a> \</p>
+<p><a href="https://github.com/olavloite/github-monitor" class="bare">https://github.com/olavloite/github-monitor</a>
+<a href="https://github.com/olavloite/gaf" class="bare">https://github.com/olavloite/gaf</a></p>
 </div>
 </div>
 </div>]]></description><link>https://olavloite.github.io/2017/05/27/Real-World-Example-for-Google-Cloud-Spanner-JPA-Hibernate.html</link><guid isPermaLink="true">https://olavloite.github.io/2017/05/27/Real-World-Example-for-Google-Cloud-Spanner-JPA-Hibernate.html</guid><category><![CDATA[Google_Cloud_Spanner]]></category><category><![CDATA[JPA]]></category><category><![CDATA[Hibernate]]></category><category><![CDATA[Java]]></category><category><![CDATA[Spring]]></category><category><![CDATA[Spring_Boot]]></category><dc:creator><![CDATA[Knut Olav Løite]]></dc:creator><pubDate>Sat, 27 May 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[Bulk Upload in Google Cloudspanner]]></title><description><![CDATA[<div id="preamble">
