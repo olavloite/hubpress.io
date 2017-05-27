@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Untitled RSS Feed]]></title><description><![CDATA[Untitled RSS Feed]]></description><link>https://olavloite.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sat, 27 May 2017 10:45:11 GMT</lastBuildDate><atom:link href="https://olavloite.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Real World Example for Google Cloud Spanner - JPA - Hibernate]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Untitled RSS Feed]]></title><description><![CDATA[Untitled RSS Feed]]></description><link>https://olavloite.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sat, 27 May 2017 10:47:13 GMT</lastBuildDate><atom:link href="https://olavloite.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Real World Example for Google Cloud Spanner - JPA - Hibernate]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p><a href="https://github.com/olavloite/github-monitor" class="bare">https://github.com/olavloite/github-monitor</a>
@@ -16,10 +16,20 @@
 <h3 id="_google_cloud_spanner_jdbc_driver">Google Cloud Spanner JDBC Driver</h3>
 <div class="paragraph">
 <p>An open source JDBC Driver for Google Cloud Spanner that supports a number of features not supported by the
-official JDBC Driver from Google:
-. DML-statements (UPDATE, INSERT, DELETE)
-. DDL-statements (CREATE TABLE, ALTER TABLE, &#8230;&#8203;)
-. Transactions</p>
+official JDBC Driver from Google:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>DML-statements (UPDATE, INSERT, DELETE)</p>
+</li>
+<li>
+<p>DDL-statements (CREATE TABLE, ALTER TABLE, &#8230;&#8203;)</p>
+</li>
+<li>
+<p>Transactions</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
 <p>More information on this driver can be found here:
