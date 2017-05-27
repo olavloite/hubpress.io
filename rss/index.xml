@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Untitled RSS Feed]]></title><description><![CDATA[Untitled RSS Feed]]></description><link>https://olavloite.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sat, 27 May 2017 10:38:43 GMT</lastBuildDate><atom:link href="https://olavloite.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Real World Example for Google Cloud Spanner - JPA - Hibernate]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Untitled RSS Feed]]></title><description><![CDATA[Untitled RSS Feed]]></description><link>https://olavloite.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sat, 27 May 2017 10:42:53 GMT</lastBuildDate><atom:link href="https://olavloite.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Real World Example for Google Cloud Spanner - JPA - Hibernate]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://github.com/olavloite/github-monitor" class="bare">https://github.com/olavloite/github-monitor</a></p>
-</div>
-<div class="paragraph">
-<p><a href="https://github.com/olavloite/gaf" class="bare">https://github.com/olavloite/gaf</a></p>
+<p><a href="https://github.com/olavloite/github-monitor" class="bare">https://github.com/olavloite/github-monitor</a>
+<a href="https://github.com/olavloite/gaf" class="bare">https://github.com/olavloite/gaf</a></p>
 </div>
 <div class="paragraph">
 <p>The combination of the two above projects show a real world example of how an application can be developed using JPA/Hibernate in combination with Google Cloud Spanner.</p>
@@ -20,8 +18,8 @@
 <p>An open source JDBC Driver for Google Cloud Spanner that supports a number of features not supported by the
 official JDBC Driver from Google:
 1. DML-statements (UPDATE, INSERT, DELETE)
-2. DDL-statements (CREATE TABLE, ALTER TABLE, &#8230;&#8203;)
-3. Transactions</p>
+1. DDL-statements (CREATE TABLE, ALTER TABLE, &#8230;&#8203;)
+1. Transactions</p>
 </div>
 <div class="paragraph">
 <p>More information on this driver can be found here:
