@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Untitled RSS Feed]]></title><description><![CDATA[Untitled RSS Feed]]></description><link>https://olavloite.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sat, 27 May 2017 10:51:34 GMT</lastBuildDate><atom:link href="https://olavloite.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Real World Example for Google Cloud Spanner - JPA - Hibernate]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Untitled RSS Feed]]></title><description><![CDATA[Untitled RSS Feed]]></description><link>https://olavloite.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sat, 27 May 2017 10:54:43 GMT</lastBuildDate><atom:link href="https://olavloite.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Real World Example for Google Cloud Spanner - JPA - Hibernate]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p><a href="https://github.com/olavloite/github-monitor" class="bare">https://github.com/olavloite/github-monitor</a>
@@ -210,72 +210,64 @@ public class Account extends FriggEntity
 </div>
 </div>
 <div class="paragraph">
-<p>The Account entity extends the base entity and adds additional columns. The entity is stored in a table with a default name (<code><code>ACCOUNT</code></code>), and includes a unique index on the column <code><code>username</code></code>. The name of the index is generated.</p>
+<p>The Account entity extends the base entity and adds additional columns. The entity is stored in a table with a default name (ACCOUNT), and includes a unique index on the column username. The name of the index is generated.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_roleaccount_entity">RoleAccount Entity</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>RoleAccount stores relations between accounts and roles. I consider it good practice to explicitly define these many-to-many relations as a stand alone entity, and not using a many-to-many annotation with an automatically generated relations table. You gain more control over the relation by defining it as an entity.</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-RoleAccount```storesrelationsbetweenaccountsandroles.Iconsideritgoodpracticetoexplicitlydefinethesemany-to-manyrelationsasastandaloneentity" data-lang="RoleAccount```storesrelationsbetweenaccountsandroles.Iconsideritgoodpracticetoexplicitlydefinethesemany-to-manyrelationsasastandaloneentity"></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>@Entity
+<pre class="highlight"><code>@Entity
 @Table(indexes = { @Index(name = "IDX_ROLEACCOUNT_ACCOUNT", columnList = "account"),
 		@Index(name = "IDX_ROLEACCOUNT_ROLE", columnList = "role") })
 public class RoleAccount extends FriggEntity
 {
-	private static final long serialVersionUID = 1L;</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>@FriggDomainDescriptor(defaultEditableInAutoForm = false)
-@ManyToOne(fetch = FetchType.EAGER)
-@JoinColumn(name = "account", nullable = false)
-private Account account;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>@ManyToOne(fetch = FetchType.EAGER)
-@JoinColumn(name = "role", nullable = false)
-private Role role;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>public RoleAccount()
-{
-}</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>public RoleAccount(Account account, Role role)
-{
-	setAccount(account);
-	setRole(role);
-}</pre>
+	private static final long serialVersionUID = 1L;
+
+	@FriggDomainDescriptor(defaultEditableInAutoForm = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "account", nullable = false)
+	private Account account;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "role", nullable = false)
+	private Role role;
+
+	public RoleAccount()
+	{
+	}
+
+	public RoleAccount(Account account, Role role)
+	{
+		setAccount(account);
+		setRole(role);
+	}
+
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>}</p>
+<p>The properties account and role have been annotated with @JoinColumn. Normally, this would lead to the generation of a table with two foreign key constraints. Google Cloud Spanner does however not support traditional foreign key constraints, and these are therefore also not generated.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>The properties ```account``` and ```role``` have been annotated with ```@JoinColumn```. Normally, this would lead to the generation of a table with two foreign key constraints. Google Cloud Spanner does however not support traditional foreign key constraints, and these are therefore also not generated.
-
-Google Cloud Spanner does support Interleaved Tables (https://cloud.google.com/spanner/docs/schema-and-data-model#creating_interleaved_tables). Interleaved tables are never generated by the schema generation of the Google Cloud Spanner Hibernate dialect. If you want a schema using interleaved tables, you will have to create that part of the schema manually.
-
-## Getting the Project
-The example project is a multi-module Maven project. It also depends on another multi-module Maven project (General Application Framework, gaf, https://github.com/olavloite/gaf). You should get both from GitHub and import them into your IDE.
-
-https://github.com/olavloite/github-monitor
-https://github.com/olavloite/gaf</code></pre>
+<div class="paragraph">
+<p>Google Cloud Spanner does support Interleaved Tables (<a href="https://cloud.google.com/spanner/docs/schema-and-data-model#creating_interleaved_tables" class="bare">https://cloud.google.com/spanner/docs/schema-and-data-model#creating_interleaved_tables</a>). Interleaved tables are never generated by the schema generation of the Google Cloud Spanner Hibernate dialect. If you want a schema using interleaved tables, you will have to create that part of the schema manually.</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_getting_the_project">Getting the Project</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The example project is a multi-module Maven project. It also depends on another multi-module Maven project (General Application Framework, gaf, <a href="https://github.com/olavloite/gaf" class="bare">https://github.com/olavloite/gaf</a>). You should get both from GitHub and import them into your IDE.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/olavloite/github-monitor" class="bare">https://github.com/olavloite/github-monitor</a>
+<a href="https://github.com/olavloite/gaf" class="bare">https://github.com/olavloite/gaf</a></p>
 </div>
 </div>
 </div>]]></description><link>https://olavloite.github.io/2017/05/27/Real-World-Example-for-Google-Cloud-Spanner-JPA-Hibernate.html</link><guid isPermaLink="true">https://olavloite.github.io/2017/05/27/Real-World-Example-for-Google-Cloud-Spanner-JPA-Hibernate.html</guid><category><![CDATA[Google_Cloud_Spanner]]></category><category><![CDATA[JPA]]></category><category><![CDATA[Hibernate]]></category><category><![CDATA[Java]]></category><dc:creator><![CDATA[Knut Olav Løite]]></dc:creator><pubDate>Sat, 27 May 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[Bulk Upload in Google Cloudspanner]]></title><description><![CDATA[<div id="preamble">
