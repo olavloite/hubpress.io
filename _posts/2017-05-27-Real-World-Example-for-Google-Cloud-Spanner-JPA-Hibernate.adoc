@@ -167,6 +167,7 @@ public class Account extends FriggEntity
 The Account entity extends the base entity and adds additional columns. The entity is stored in a table with a default name (```ACCOUNT```), and includes a unique index on the column ```username```. The name of the index is generated.
 
 ## RoleAccount Entity
+
 ```RoleAccount``` stores relations between accounts and roles. I consider it good practice to explicitly define these many-to-many relations as a stand alone entity, and not using a many-to-many annotation with an automatically generated relations table. You gain more control over the relation by defining it as an entity.
 
 ```
