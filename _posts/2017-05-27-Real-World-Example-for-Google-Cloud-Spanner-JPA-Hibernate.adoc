@@ -3,10 +3,9 @@
 :published_at: 2017-05-27
 :hp-tags: Google_Cloud_Spanner, JPA, Hibernate, Java
 
-https://github.com/olavloite/github-monitor
-
-https://github.com/olavloite/gaf
-
+https://github.com/olavloite/github-monitor  
+https://github.com/olavloite/gaf  
+  
 The combination of the two above projects show a real world example of how an application can be developed using JPA/Hibernate in combination with Google Cloud Spanner.
 
 The project depends on two important libraries:
@@ -15,8 +14,8 @@ The project depends on two important libraries:
 An open source JDBC Driver for Google Cloud Spanner that supports a number of features not supported by the
 official JDBC Driver from Google:
 1. DML-statements (UPDATE, INSERT, DELETE)
-2. DDL-statements (CREATE TABLE, ALTER TABLE, ...)
-3. Transactions
+1. DDL-statements (CREATE TABLE, ALTER TABLE, ...)
+1. Transactions
 
 More information on this driver can be found here:
 https://github.com/olavloite/spanner-jdbc
