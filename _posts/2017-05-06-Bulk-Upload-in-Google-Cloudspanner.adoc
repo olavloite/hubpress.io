@@ -10,7 +10,6 @@ Google Cloud Spanner is Google's horizontally scalable, globally consistent, rel
 
 == Topics
 This tutorial contains the following topics:
-
 . Convert an existing relational database to Cloud Spanner
 . Bulk upload data to Cloud Spanner using multiple parallel workers
 . Connect to a Cloud Spanner database with JDBC and use the following features (not supported by the JDBC driver supplied by Google):
