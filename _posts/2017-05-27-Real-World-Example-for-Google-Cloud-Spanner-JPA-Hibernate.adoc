@@ -25,7 +25,9 @@ https://github.com/olavloite/spanner-jdbc
 
 ### Google Cloud Spanner Dialect
 A Hibernate Dialect for Google Cloud Spanner. More information on this dialect can be found here:
-https://github.com/olavloite/spanner-hibernate
+https://github.com/olavloite/spanner-hibernate  
+
+The dialect supports schema generation.  
 
 ## Example Project
 The example project is a web application that reads GitHub Repositories from GitHub and stores these in a Google Cloud Spanner database. The main goal of this project is to show how you could develop a real world application with Google Cloud Spanner / JPA / Hibernate. The functionality of the example project itself is secondary.
