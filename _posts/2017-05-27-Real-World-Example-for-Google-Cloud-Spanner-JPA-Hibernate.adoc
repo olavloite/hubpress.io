@@ -13,6 +13,7 @@ The project depends on two important libraries:
 ### Google Cloud Spanner JDBC Driver
 An open source JDBC Driver for Google Cloud Spanner that supports a number of features not supported by the
 official JDBC Driver from Google:
+
 . DML-statements (UPDATE, INSERT, DELETE)
 . DDL-statements (CREATE TABLE, ALTER TABLE, ...)
 . Transactions
