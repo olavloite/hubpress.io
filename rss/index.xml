@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Untitled RSS Feed]]></title><description><![CDATA[Untitled RSS Feed]]></description><link>https://olavloite.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sun, 28 May 2017 05:25:13 GMT</lastBuildDate><atom:link href="https://olavloite.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Real World Example for Google Cloud Spanner - JPA - Hibernate]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Untitled RSS Feed]]></title><description><![CDATA[Untitled RSS Feed]]></description><link>https://olavloite.github.io</link><generator>RSS for Node</generator><lastBuildDate>Sun, 28 May 2017 05:27:41 GMT</lastBuildDate><atom:link href="https://olavloite.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Real World Example for Google Cloud Spanner - JPA - Hibernate]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>This post is a short description of a real-world example of an application using JPA/Hibernate and Spring Boot in combination with Google Cloud Spanner. As it is based on a real application, its code base is large and somewhat complex. If you are looking for a simple tutorial on how to set up Google Cloud Spanner with JPA/Hibernate, then have a look here: <a href="https://olavloite.github.io/2017/03/11/Google-Cloud-Spanner-with-Spring-Boot-JPA-and-Hibernate.html" class="bare">https://olavloite.github.io/2017/03/11/Google-Cloud-Spanner-with-Spring-Boot-JPA-and-Hibernate.html</a></p>
@@ -383,26 +383,22 @@ public class RoleAccount extends FriggEntity
 <div class="paragraph">
 <p>The code snippet below shows the main part of the <a href="https://github.com/olavloite/spanner-jdbc-converter/blob/master/src/main/java/nl/topicus/spanner/converter/data/UploadWorker.java">worker</a>. Note how the worker uses standard JDBC functionality to access Cloud Spanner. Both transactions and statements are standard JDBC calls.</p>
 </div>
-<div class="paragraph">
-<p>@Override
+<div class="listingblock">
+<div class="content">
+<pre>@Override
 public void run()
 {
     try (Connection source = DriverManager.getConnection(urlSource);
             Connection destination = DriverManager.getConnection(urlDestination))
     {
-        log.info(name + ": " + sourceTable + ": Starting copying " + numberOfRecordsToCopy + " records");</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>destination.setAutoCommit(false);
-String sql = "INSERT INTO " + destinationTable + " (" + cols.getColumnNames() + ") VALUES \n";
-sql = sql + "(" + cols.getColumnParameters() + ")";
-PreparedStatement statement = destination.prepareStatement(sql);</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>        int lastRecord = beginOffset + numberOfRecordsToCopy;
+        log.info(name + ": " + sourceTable + ": Starting copying " + numberOfRecordsToCopy + " records");
+
+        destination.setAutoCommit(false);
+        String sql = "INSERT INTO " + destinationTable + " (" + cols.getColumnNames() + ") VALUES \n";
+        sql = sql + "(" + cols.getColumnParameters() + ")";
+        PreparedStatement statement = destination.prepareStatement(sql);
+
+        int lastRecord = beginOffset + numberOfRecordsToCopy;
         int recordCount = 0;
         int currentOffset = beginOffset;
         while (true)
