@@ -50,6 +50,7 @@ The application will scan your source database for all tables and then try to cr
 
 The code snippet below shows the main part of the https://github.com/olavloite/spanner-jdbc-converter/blob/master/src/main/java/nl/topicus/spanner/converter/data/UploadWorker.java[worker]. Note how the worker uses standard JDBC functionality to access Cloud Spanner. Both transactions and statements are standard JDBC calls.
 
+----
 @Override
 public void run()
 {
@@ -109,6 +110,7 @@ public void run()
     }
     log.info(name + ": Finished copying");
 }
+----
 
 Also note that transactions are committed after each batch and not after copying the entire table. This is not a programming error, but a necessity as Google Cloud Spanner does not allow transactions to contain more than 20,000 mutations. A mutation of one row with five columns counts as five mutations.
 
