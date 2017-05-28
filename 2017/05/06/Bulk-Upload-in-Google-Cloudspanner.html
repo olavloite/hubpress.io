@@ -12,7 +12,7 @@
 
     <link rel="shortcut icon" href="https://olavloite.github.io/favicon.ico">
 
-    <link rel="stylesheet" type="text/css" href="//olavloite.github.io/themes/casper/assets/css/screen.css?v=1495881234289" />
+    <link rel="stylesheet" type="text/css" href="//olavloite.github.io/themes/casper/assets/css/screen.css?v=1495949113733" />
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
 
     <link rel="canonical" href="https://olavloite.github.io/2017/05/06/Bulk-Upload-in-Google-Cloudspanner.html" />
@@ -25,15 +25,15 @@
     <meta property="og:url" content="https://olavloite.github.io/2017/05/06/Bulk-Upload-in-Google-Cloudspanner.html" />
     <meta property="article:published_time" content="2017-05-06T00:00:00.000Z" />
     <meta property="article:tag" content="Google_Cloud_Spanner" />
-    <meta property="article:tag" content=" Google_Cloud" />
-    <meta property="article:tag" content=" Cloud_Spanner" />
-    <meta property="article:tag" content=" JDBC" />
-    <meta property="article:tag" content=" Java" />
-    <meta property="article:tag" content=" Open_Source" />
-    <meta property="article:tag" content=" Transactions" />
-    <meta property="article:tag" content=" Bulk_Upload" />
-    <meta property="article:tag" content=" DML" />
-    <meta property="article:tag" content=" DDL" />
+    <meta property="article:tag" content="Google_Cloud" />
+    <meta property="article:tag" content="Cloud_Spanner" />
+    <meta property="article:tag" content="JDBC" />
+    <meta property="article:tag" content="Java" />
+    <meta property="article:tag" content="Open_Source" />
+    <meta property="article:tag" content="Transactions" />
+    <meta property="article:tag" content="Bulk_Upload" />
+    <meta property="article:tag" content="DML" />
+    <meta property="article:tag" content="DDL" />
     
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Bulk Upload in Google Cloudspanner" />
@@ -55,7 +55,7 @@
     "headline": "Bulk Upload in Google Cloudspanner",
     "url": "https://olavloite.github.io/2017/05/06/Bulk-Upload-in-Google-Cloudspanner.html",
     "datePublished": "2017-05-06T00:00:00.000Z",
-    "keywords": "Google_Cloud_Spanner,  Google_Cloud,  Cloud_Spanner,  JDBC,  Java,  Open_Source,  Transactions,  Bulk_Upload,  DML,  DDL",
+    "keywords": "Google_Cloud_Spanner, Google_Cloud, Cloud_Spanner, JDBC, Java, Open_Source, Transactions, Bulk_Upload, DML, DDL",
     "description": "Google Cloud Spanner is Google&amp;#8217;s horizontally scalable, globally consistent, relational database service. Cloud Spanner claims to be the first and only relational database service that is both strongly consistent and horizontally scalable. Cloud Spanner supports transactions and SQL queries and could in theory be used with any application"
 }
     </script>
@@ -85,7 +85,7 @@
         <header class="post-header">
             <h1 class="post-title">Bulk Upload in Google Cloudspanner</h1>
             <section class="post-meta">
-                <time class="post-date" datetime="2017-05-06">06 May 2017</time>  on <a href="https://olavloite.github.io/tag/Google-Cloud-Spanner/">Google_Cloud_Spanner</a>, <a href="https://olavloite.github.io/tag/Google-Cloud/"> Google_Cloud</a>, <a href="https://olavloite.github.io/tag/Cloud-Spanner/"> Cloud_Spanner</a>, <a href="https://olavloite.github.io/tag/JDBC/"> JDBC</a>, <a href="https://olavloite.github.io/tag/Java/"> Java</a>, <a href="https://olavloite.github.io/tag/Open-Source/"> Open_Source</a>, <a href="https://olavloite.github.io/tag/Transactions/"> Transactions</a>, <a href="https://olavloite.github.io/tag/Bulk-Upload/"> Bulk_Upload</a>, <a href="https://olavloite.github.io/tag/DML/"> DML</a>, <a href="https://olavloite.github.io/tag/DDL/"> DDL</a>
+                <time class="post-date" datetime="2017-05-06">06 May 2017</time>  on <a href="https://olavloite.github.io/tag/Google-Cloud-Spanner/">Google_Cloud_Spanner</a>, <a href="https://olavloite.github.io/tag/Google-Cloud/">Google_Cloud</a>, <a href="https://olavloite.github.io/tag/Cloud-Spanner/">Cloud_Spanner</a>, <a href="https://olavloite.github.io/tag/JDBC/">JDBC</a>, <a href="https://olavloite.github.io/tag/Java/">Java</a>, <a href="https://olavloite.github.io/tag/Open-Source/">Open_Source</a>, <a href="https://olavloite.github.io/tag/Transactions/">Transactions</a>, <a href="https://olavloite.github.io/tag/Bulk-Upload/">Bulk_Upload</a>, <a href="https://olavloite.github.io/tag/DML/">DML</a>, <a href="https://olavloite.github.io/tag/DDL/">DDL</a>
             </section>
         </header>
 
@@ -186,59 +186,77 @@
 . Tables with more than 1,000 records are converted by 10 parallel workers. Each worker is assigned a proportionate number of the records in the table to convert. The workers then convert the data in batches of 1,000 records, each batch being a single transaction.</p>
 </div>
 <div class="paragraph">
-<p>The code snippet below shows the main part of the worker. Note how the worker uses standard JDBC functionality to access Cloud Spanner. Both transactions and statements are standard JDBC calls.</p>
+<p>The code snippet below shows the main part of the <a href="https://github.com/olavloite/spanner-jdbc-converter/blob/master/src/main/java/nl/topicus/spanner/converter/data/UploadWorker.java">worker</a>. Note how the worker uses standard JDBC functionality to access Cloud Spanner. Both transactions and statements are standard JDBC calls.</p>
+</div>
+<div class="paragraph">
+<p>@Override
+public void run()
+{
+    try (Connection source = DriverManager.getConnection(urlSource);
+            Connection destination = DriverManager.getConnection(urlDestination))
+    {
+        log.info(name + ": " + sourceTable + ": Starting copying " + numberOfRecordsToCopy + " records");</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>try (Connection source = DriverManager.getConnection(urlSource);
-		Connection destination = DriverManager.getConnection(urlDestination))
-{
-	log.info(name + ": " + sourceTable + ": Starting copying " + numberOfRecordsToCopy + " records");
-	destination.setAutoCommit(false);
-	String sql = "INSERT INTO " + destinationTable + " (" + cols.getColumnNames() + ") VALUES \n";
-	sql = sql + "(" + cols.getColumnParameters() + ")";
-	PreparedStatement statement = destination.prepareStatement(sql);
-	int lastRecord = beginOffset + numberOfRecordsToCopy;
-	int recordCount = 0;
-	int currentOffset = beginOffset;
-	while (true)
-	{
-		int limit = Math.min(batchSize, lastRecord - currentOffset);
-		String select = selectFormat.replace("$COLUMNS", cols.getColumnNames());
-		select = select.replace("$TABLE", sourceTable);
-		select = select.replace("$PRIMARY_KEY", cols.getPrimaryKeyColumns());
-		select = select.replace("$BATCH_SIZE", String.valueOf(limit));
-		select = select.replace("$OFFSET", String.valueOf(currentOffset));
-		try (ResultSet rs = source.createStatement().executeQuery(select))
-		{
-			while (rs.next())
-			{
-				int index = 1;
-				for (Integer type : cols.columnTypes)
-				{
-					Object object = rs.getObject(index);
-					statement.setObject(index, object, type);
-					index++;
-				}
-				statement.executeUpdate();
-				recordCount++;
-			}
-		}
-		destination.commit();
-		log.info(name + ": " + sourceTable + ": Records copied so far: " + recordCount + " of "
-				+ numberOfRecordsToCopy);
-		currentOffset = currentOffset + batchSize;
-		if (recordCount &gt;= numberOfRecordsToCopy)
-			break;
-	}
-}
-catch (SQLException e)
-{
-	log.severe("Error during data copy: " + e.getMessage());
-	throw new RuntimeException(e);
-}
-log.info(name + ": Finished copying");</pre>
+<pre>destination.setAutoCommit(false);
+String sql = "INSERT INTO " + destinationTable + " (" + cols.getColumnNames() + ") VALUES \n";
+sql = sql + "(" + cols.getColumnParameters() + ")";
+PreparedStatement statement = destination.prepareStatement(sql);</pre>
 </div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>        int lastRecord = beginOffset + numberOfRecordsToCopy;
+        int recordCount = 0;
+        int currentOffset = beginOffset;
+        while (true)
+        {
+            int limit = Math.min(batchSize, lastRecord - currentOffset);
+            String select = selectFormat.replace("$COLUMNS", cols.getColumnNames());
+            select = select.replace("$TABLE", sourceTable);
+            select = select.replace("$PRIMARY_KEY", cols.getPrimaryKeyColumns());
+            select = select.replace("$BATCH_SIZE", String.valueOf(limit));
+            select = select.replace("$OFFSET", String.valueOf(currentOffset));
+            try (ResultSet rs = source.createStatement().executeQuery(select))
+            {
+                while (rs.next())
+                {
+                    int index = 1;
+                    for (Integer type : cols.columnTypes)
+                    {
+                        Object object = rs.getObject(index);
+                        statement.setObject(index, object, type);
+                        index++;
+                    }
+                    if (useJdbcBatching)
+                        statement.addBatch();
+                    else
+                        statement.executeUpdate();
+                    recordCount++;
+                }
+                if (useJdbcBatching)
+                    statement.executeBatch();
+            }
+            destination.commit();
+            log.info(name + ": " + sourceTable + ": Records copied so far: " + recordCount + " of "
+                    + numberOfRecordsToCopy);
+            currentOffset = currentOffset + batchSize;
+            if (recordCount &gt;= numberOfRecordsToCopy)
+                break;
+        }
+    }
+    catch (SQLException e)
+    {
+        log.severe("Error during data copy: " + e.getMessage());
+        throw new RuntimeException(e);
+    }
+    log.info(name + ": Finished copying");
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also note that transactions are committed after each batch and not after copying the entire table. This is not a programming error, but a necessity as Google Cloud Spanner does not allow transactions to contain more than 20,000 mutations. A mutation of one row with five columns counts as five mutations.</p>
 </div>
 </div>
 </div>
@@ -322,8 +340,8 @@ The JDBC driver can also be used to develop applications using JPA / Hibernate i
        
     <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
-    <script type="text/javascript" src="//olavloite.github.io/themes/casper/assets/js/jquery.fitvids.js?v=1495881234289"></script>
-    <script type="text/javascript" src="//olavloite.github.io/themes/casper/assets/js/index.js?v=1495881234289"></script>
+    <script type="text/javascript" src="//olavloite.github.io/themes/casper/assets/js/jquery.fitvids.js?v=1495949113733"></script>
+    <script type="text/javascript" src="//olavloite.github.io/themes/casper/assets/js/index.js?v=1495949113733"></script>
 
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
