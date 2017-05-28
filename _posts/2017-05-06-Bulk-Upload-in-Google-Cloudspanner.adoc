@@ -48,57 +48,69 @@ The application will scan your source database for all tables and then try to cr
 . Tables with 1,000 or less records will be converted using a simple single threaded conversion process. All records will be converted in one transaction.
 . Tables with more than 1,000 records are converted by 10 parallel workers. Each worker is assigned a proportionate number of the records in the table to convert. The workers then convert the data in batches of 1,000 records, each batch being a single transaction.
 
-The code snippet below shows the main part of the worker. Note how the worker uses standard JDBC functionality to access Cloud Spanner. Both transactions and statements are standard JDBC calls.
+The code snippet below shows the main part of the https://github.com/olavloite/spanner-jdbc-converter/blob/master/src/main/java/nl/topicus/spanner/converter/data/UploadWorker.java[worker]. Note how the worker uses standard JDBC functionality to access Cloud Spanner. Both transactions and statements are standard JDBC calls.
 
-		try (Connection source = DriverManager.getConnection(urlSource);
-				Connection destination = DriverManager.getConnection(urlDestination))
-		{
-			log.info(name + ": " + sourceTable + ": Starting copying " + numberOfRecordsToCopy + " records");
-			destination.setAutoCommit(false);
-			String sql = "INSERT INTO " + destinationTable + " (" + cols.getColumnNames() + ") VALUES \n";
-			sql = sql + "(" + cols.getColumnParameters() + ")";
-			PreparedStatement statement = destination.prepareStatement(sql);
-			int lastRecord = beginOffset + numberOfRecordsToCopy;
-			int recordCount = 0;
-			int currentOffset = beginOffset;
-			while (true)
-			{
-				int limit = Math.min(batchSize, lastRecord - currentOffset);
-				String select = selectFormat.replace("$COLUMNS", cols.getColumnNames());
-				select = select.replace("$TABLE", sourceTable);
-				select = select.replace("$PRIMARY_KEY", cols.getPrimaryKeyColumns());
-				select = select.replace("$BATCH_SIZE", String.valueOf(limit));
-				select = select.replace("$OFFSET", String.valueOf(currentOffset));
-				try (ResultSet rs = source.createStatement().executeQuery(select))
-				{
-					while (rs.next())
-					{
-						int index = 1;
-						for (Integer type : cols.columnTypes)
-						{
-							Object object = rs.getObject(index);
-							statement.setObject(index, object, type);
-							index++;
-						}
-						statement.executeUpdate();
-						recordCount++;
-					}
-				}
-				destination.commit();
-				log.info(name + ": " + sourceTable + ": Records copied so far: " + recordCount + " of "
-						+ numberOfRecordsToCopy);
-				currentOffset = currentOffset + batchSize;
-				if (recordCount >= numberOfRecordsToCopy)
-					break;
-			}
-		}
-		catch (SQLException e)
-		{
-			log.severe("Error during data copy: " + e.getMessage());
-			throw new RuntimeException(e);
-		}
-		log.info(name + ": Finished copying");
+@Override
+public void run()
+{
+    try (Connection source = DriverManager.getConnection(urlSource);
+            Connection destination = DriverManager.getConnection(urlDestination))
+    {
+        log.info(name + ": " + sourceTable + ": Starting copying " + numberOfRecordsToCopy + " records");
 
+        destination.setAutoCommit(false);
+        String sql = "INSERT INTO " + destinationTable + " (" + cols.getColumnNames() + ") VALUES \n";
+        sql = sql + "(" + cols.getColumnParameters() + ")";
+        PreparedStatement statement = destination.prepareStatement(sql);
+
+        int lastRecord = beginOffset + numberOfRecordsToCopy;
+        int recordCount = 0;
+        int currentOffset = beginOffset;
+        while (true)
+        {
+            int limit = Math.min(batchSize, lastRecord - currentOffset);
+            String select = selectFormat.replace("$COLUMNS", cols.getColumnNames());
+            select = select.replace("$TABLE", sourceTable);
+            select = select.replace("$PRIMARY_KEY", cols.getPrimaryKeyColumns());
+            select = select.replace("$BATCH_SIZE", String.valueOf(limit));
+            select = select.replace("$OFFSET", String.valueOf(currentOffset));
+            try (ResultSet rs = source.createStatement().executeQuery(select))
+            {
+                while (rs.next())
+                {
+                    int index = 1;
+                    for (Integer type : cols.columnTypes)
+                    {
+                        Object object = rs.getObject(index);
+                        statement.setObject(index, object, type);
+                        index++;
+                    }
+                    if (useJdbcBatching)
+                        statement.addBatch();
+                    else
+                        statement.executeUpdate();
+                    recordCount++;
+                }
+                if (useJdbcBatching)
+                    statement.executeBatch();
+            }
+            destination.commit();
+            log.info(name + ": " + sourceTable + ": Records copied so far: " + recordCount + " of "
+                    + numberOfRecordsToCopy);
+            currentOffset = currentOffset + batchSize;
+            if (recordCount >= numberOfRecordsToCopy)
+                break;
+        }
+    }
+    catch (SQLException e)
+    {
+        log.severe("Error during data copy: " + e.getMessage());
+        throw new RuntimeException(e);
+    }
+    log.info(name + ": Finished copying");
+}
+
+Also note that transactions are committed after each batch and not after copying the entire table. This is not a programming error, but a necessity as Google Cloud Spanner does not allow transactions to contain more than 20,000 mutations. A mutation of one row with five columns counts as five mutations.
 
 == Summary
 The Google Cloud Spanner JDBC driver allows you to work with Cloud Spanner as it was (almost) any other JDBC compliant relational database, including DDL- and DML-statements, (prepared) JDBC statements and transactions. Cloud Spanner itself has some limitations when it comes to bulk update statements. Insert and update statements can only operate on one row at a time.
