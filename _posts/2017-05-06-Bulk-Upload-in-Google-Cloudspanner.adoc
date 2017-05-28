@@ -4,6 +4,8 @@
 :published_at: 2017-05-06
 :hp-tags: Google_Cloud_Spanner, Google_Cloud, Cloud_Spanner, JDBC, Java, Open_Source, Transactions, Bulk_Upload, DML, DDL
 :hp-alt-title: Bulk Upload in Google Cloudspanner
+:source-highlighter: pygments
+:source-language: java
 
 
 Google Cloud Spanner is Google's horizontally scalable, globally consistent, relational database service. Cloud Spanner claims to be https://cloud.google.com/spanner/[the first and only relational database service that is both strongly consistent and horizontally scalable]. Cloud Spanner supports transactions and SQL queries and could in theory be used with any application currently running on other relational databases. This tutorial shows how you could convert an existing relational database and bulk upload all data to a new Google Cloud Spanner database using https://github.com/olavloite/spanner-jdbc[this open source JDBC driver].
