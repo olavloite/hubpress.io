@@ -5,6 +5,10 @@
 :source-highlighter: pygments
 :source-language: java
 
+This post is a short description of a real-world example of an application using JPA/Hibernate and Spring Boot in combination with Google Cloud Spanner. As it is based on a real application, its code base is large and somewhat complex. If you are looking for a simple tutorial on how to set up Google Cloud Spanner with JPA/Hibernate, then have a look here: https://olavloite.github.io/2017/03/11/Google-Cloud-Spanner-with-Spring-Boot-JPA-and-Hibernate.html
+
+## Introduction
+
 https://github.com/olavloite/github-monitor  
 
 
