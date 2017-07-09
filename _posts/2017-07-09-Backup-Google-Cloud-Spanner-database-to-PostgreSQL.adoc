@@ -1,0 +1,6 @@
+= Backup Google Cloud Spanner database to PostgreSQL
+// See https://hubpress.gitbooks.io/hubpress-knowledgebase/content/ for information about the parameters.
+// :hp-image: /covers/cover.png
+:published_at: 2017-07-09
+:hp-tags: JDBC, Google_Cloud_Spanner, Cloud_Spanner, PostgreSQL
+// :hp-alt-title: My English Title
