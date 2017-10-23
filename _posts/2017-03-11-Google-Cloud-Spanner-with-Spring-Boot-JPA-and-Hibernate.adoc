@@ -5,6 +5,8 @@
 :hp-tags: Google_Cloud_Spanner, Google_Cloud, Cloud_Spanner, Spring_Boot, JPA, Hibernate, JDBC, Java, Open_Source,
 :hp-alt-title: Google Cloud Spanner with Spring Boot, JPA and Hibernate
 
+http://www.googlecloudspanner.com/2017/09/google-cloud-spanner-with-jpa-and.html[A newer version of this article can be found here.]
+
 Google Cloud Spanner is Google's horizontally scalable, globally consistent, relational database service. Cloud Spanner claims to be https://cloud.google.com/spanner/[the first and only relational database service that is both strongly consistent and horizontally scalable]. Cloud Spanner supports transactions and SQL queries and could in theory be used with any application currently running on other relational databases. This tutorial will guide you through the steps needed to set up a test environment for developing a Spring Boot application with Cloud Spanner as its data source using JPA/Hibernate.
 
 == Step 1: Create a Cloud Spanner test database
